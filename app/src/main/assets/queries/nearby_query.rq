@@ -7,7 +7,7 @@ SELECT
      (SAMPLE(COALESCE(?icon0, ?icon1)) as ?icon)
      (SAMPLE(COALESCE(?emoji0, ?emoji1)) as ?emoji)
      ?wikipediaArticle
-     ?commonsArticle
+     ?commonsCategory
    WHERE {
      # Around given location...
      SERVICE wikibase:around {
@@ -45,11 +45,7 @@ SELECT
            SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
          }
 
-         OPTIONAL {
-           ?commonsArticle   schema:about ?item ;
-                               schema:isPartOf <https://commons.wikimedia.org/> .
-           SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
-         }
+       OPTIONAL { ?item wdt:P373 ?commonsCategory. }
      }
    }
-   GROUP BY ?item ?wikipediaArticle ?commonsArticle
+   GROUP BY ?item ?wikipediaArticle ?commonsCategory
